@@ -1,0 +1,60 @@
+#Configuration d'un clavier numérique externe comme clavier de macros personalisées
+# source : https://unix.stackexchange.com/questions/509000/can-i-launch-macros-and-shortcuts-from-a-second-keyboard-on-linux
+
+# lsusb : Bus 001 Device 018: ID 04d9:1203 Holtek Semiconductor, Inc. Keyboard
+
+# evtest pour avoir les codes de chaque touche (champ MSC_SCAN / Value)
+
+# Liste des noms symboliques pour les touches :
+# sed -n '/KEY_/{s/.*KEY_\([A-Za-z0-9_]\+\).*/\L\1/g;p}' /usr/include/linux/input-event-codes.h | less
+
+# Procédure pour activer ce fichier:
+# systemd-hwdb update; udevadm trigger
+
+# 70053 : numlock
+# 70062 : 0
+# 70059 : 1/End
+# 7005a : 2
+# 7005b : 3
+# 7005c : 4
+# 7005d : 5
+# 7005e : 6
+# 7005f : 7
+# 70060 : 8
+# 70061 : 9
+# 70054 : /
+# 70055 : *
+# 70056 : -
+# 70057 : +
+# 7002a : <-
+# 70058 : ENTER
+# 70063 : .
+# "000" key = 3 times 70062 (no remapping possible)
+
+#### QWERTY game mapping when keyboard global configuration is AZERTY
+# tab		/		*		-
+# q			w		e		r
+# a			s		d		f
+# lshift	z		x		space
+# 0			000		esc		space
+##Note : the settings bellow are reversed, that's 'normal'...
+
+evdev:input:b0003v04D9p1203*
+ KEYBOARD_KEY_70053=tab
+ KEYBOARD_KEY_70059=leftshift
+ KEYBOARD_KEY_7005a=w
+ KEYBOARD_KEY_7005b=x
+ KEYBOARD_KEY_7005c=q
+ KEYBOARD_KEY_7005d=s
+ KEYBOARD_KEY_7005e=d
+ KEYBOARD_KEY_7005f=a
+ KEYBOARD_KEY_70060=z
+ KEYBOARD_KEY_70061=e
+ KEYBOARD_KEY_70054=/
+ KEYBOARD_KEY_70055=*
+ KEYBOARD_KEY_70056=-
+ KEYBOARD_KEY_70057=r
+ KEYBOARD_KEY_7002a=f
+ KEYBOARD_KEY_70058=space
+ KEYBOARD_KEY_70063=esc
+ KEYBOARD_KEY_70062=kp0
